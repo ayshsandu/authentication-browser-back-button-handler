@@ -20,8 +20,10 @@ public class CustomLoginEndpointUtil {
 
     private static final String SP_REDIRECT_URL_RESOURCE_PATH = "/identity/config/relyingPartyRedirectUrls";
     private static final Log log = LogFactory.getLog(CustomLoginEndpointUtil.class);
+    public static final String DELIMITER = ";";
 
-    public static String getSessionDataKeyStatus(String relyingParty, String sessionDataKey, String tenantDomain) {
+    public static String getSessionDataKeyStatus(String relyingParty, String sessionDataKey, String tenantDomain,
+                                                 String authenticators) {
 
         if(log.isDebugEnabled()){
 
@@ -54,8 +56,20 @@ public class CustomLoginEndpointUtil {
                         authenticationContextFromCache.getCallerSessionKey()));
             }
 
-            result.addProperty("status", "success");
-            return result.toString();
+            if (authenticationContextFromCache.getCurrentAuthenticator() == null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("CurrentAuthenticator is not set for the relyingParty - " + relyingParty);
+                }
+                result.addProperty("status", "success");
+                return result.toString();
+            } else if (authenticators != null && authenticators.split(DELIMITER).length <= 1) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Multi option is not enabled for the relyingParty - " + relyingParty);
+                }
+                result.addProperty("status", "success");
+                return result.toString();
+            }
+
         }
 
         String redirectUrl = getRelyingPartyRedirectUrl(relyingParty, tenantDomain);

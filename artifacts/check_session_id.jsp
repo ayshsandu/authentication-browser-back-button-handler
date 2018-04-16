@@ -3,6 +3,8 @@
     String sessionDataKey = request.getParameter("sessionDataKey");
     String relyingParty = request.getParameter("relyingParty");
     String tenantDomain = request.getParameter("tenantDomain");
-    response.getWriter().write(CustomLoginEndpointUtil.getSessionDataKeyStatus(relyingParty, sessionDataKey, tenantDomain).toString());
+    String authenticators = request.getParameter("authenticators");
+    response.getWriter().write(CustomLoginEndpointUtil.getSessionDataKeyStatus(relyingParty, sessionDataKey,
+            tenantDomain, authenticators).toString());
 %>
 

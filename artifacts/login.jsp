@@ -110,7 +110,9 @@
             function checkSessionKey() {
                 $.ajax({
                     type: "GET",
-                    url: 'check_session_id.do?sessionDataKey=' + getParameterByName('sessionDataKey') + '&relyingParty=' + getParameterByName('relyingParty') + '&tenantDomain=' + getParameterByName('tenantDomain'),
+                    url: 'check_session_id.do?sessionDataKey=' + getParameterByName('sessionDataKey') +
+                    '&relyingParty=' + getParameterByName('relyingParty') + '&tenantDomain='
+                    + getParameterByName('tenantDomain') + '&authenticators=' + getParameterByName('authenticators'),
                     success: function (data) {
                         var response = JSON.parse(data);
                         if (response && response.status == "redirect" && response.redirectUrl && response.redirectUrl.length > 0) {
